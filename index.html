@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zhimin · Agent Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --text: #2d2d3a;
+    --text-mid: #5c5c72;
+    --text-dim: #9d9db0;
+    --accent-start: #e8a87c;
+    --accent-end: #c4a0d4;
+    --card-bg: rgba(255, 255, 255, 0.32);
+    --card-hover: rgba(255, 255, 255, 0.48);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, 'SF Pro Display', sans-serif;
+    background: #f2eff6;
+    color: var(--text);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    width: 100%; height: 100%;
+    top: 0; left: 0;
+    background:
+      radial-gradient(ellipse at 20% 30%, rgba(240, 180, 170, 0.28), transparent 55%),
+      radial-gradient(ellipse at 80% 70%, rgba(196, 170, 220, 0.22), transparent 55%),
+      radial-gradient(ellipse at 50% 100%, rgba(255, 220, 200, 0.15), transparent 60%);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .page { position: relative; z-index: 1; }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    background: rgba(242, 239, 246, 0.7);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  }
+  nav .inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 16px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  nav .logo {
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: -0.3px;
+    color: var(--text);
+    cursor: pointer;
+    text-decoration: none;
+  }
+  nav .logo span {
+    background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  nav .links { display: flex; gap: 28px; }
+  nav .links a {
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-mid);
+    transition: color 0.2s;
+    cursor: pointer;
+  }
+  nav .links a:hover { color: var(--text); }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 120px 32px 80px;
+  }
+  .hero .label {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(48px, 8vw, 80px);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -2px;
+    margin-bottom: 24px;
+  }
+  .hero h1 .highlight {
+    background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero .subtitle {
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 20px;
+    color: var(--text-mid);
+    font-weight: 300;
+    line-height: 1.8;
+    max-width: 560px;
+    margin-bottom: 40px;
+  }
+  .hero .cta-row { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(200, 140, 180, 0.25);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(200, 140, 180, 0.35); }
+  .btn-ghost {
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    color: var(--text);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+  }
+  .btn-ghost:hover { background: var(--card-hover); transform: translateY(-2px); }
+  .btn-sm { padding: 10px 20px; font-size: 13px; border-radius: 10px; }
+  .btn-star {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: #fff;
+    box-shadow: 0 2px 12px rgba(251, 191, 36, 0.3);
+  }
+  .btn-star:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(251, 191, 36, 0.4); }
+  .btn-fork {
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    color: var(--text);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+  }
+  .btn-fork:hover { background: var(--card-hover); transform: translateY(-2px); }
+
+  .scroll-hint {
+    margin-top: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-dim);
+    font-size: 12px;
+    letter-spacing: 2px;
+    animation: float 2.5s ease-in-out infinite;
+  }
+  .scroll-hint .arrow { font-size: 18px; }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(8px); }
+  }
+
+  /* ─── SECTION ─── */
+  section { padding: 80px 32px; }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+  .section-label {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 48px;
+    line-height: 1.2;
+  }
+
+  /* ─── PROJECT CARDS ─── */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 24px;
+  }
+  .project-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border-radius: 24px;
+    padding: 36px 32px;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    box-shadow: 0 2px 20px rgba(180, 160, 200, 0.06);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .project-card:hover {
+    background: var(--card-hover);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(180, 160, 200, 0.15);
+  }
+  .project-card .card-icon {
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, rgba(232, 168, 124, 0.15), rgba(196, 160, 212, 0.15));
+  }
+  .project-card h3 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.3px;
+  }
+  .project-card .tags {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .tag {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 4px 10px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(232, 168, 124, 0.12), rgba(196, 160, 212, 0.12));
+    color: var(--text-mid);
+  }
+  .tag.open-source {
+    background: linear-gradient(135deg, rgba(232, 168, 124, 0.25), rgba(196, 160, 212, 0.25));
+    color: var(--text);
+  }
+  .project-card .desc {
+    font-size: 15px;
+    color: var(--text-mid);
+    line-height: 1.7;
+    font-weight: 400;
+  }
+  .project-card .stats {
+    margin-top: 18px;
+    display: flex;
+    gap: 16px;
+    font-size: 13px;
+    color: var(--text-dim);
+    font-weight: 500;
+  }
+  .project-card .card-arrow {
+    position: absolute;
+    top: 36px; right: 32px;
+    font-size: 18px;
+    color: var(--text-dim);
+    transition: transform 0.2s;
+  }
+  .project-card:hover .card-arrow { transform: translate(4px, -4px); }
+  .project-card.no-detail { cursor: default; }
+  .project-card.no-detail:hover { transform: translateY(-4px); }
+
+  /* ─── DETAIL OVERLAY ─── */
+  .detail-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 200;
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 0;
+    overflow-y: auto;
+  }
+  .detail-overlay.active { display: flex; }
+
+  .detail-backdrop {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(45, 40, 60, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .detail-overlay.active .detail-backdrop { opacity: 1; }
+
+  .detail-page {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 900px;
+    min-height: 100vh;
+    background: #f2eff6;
+    padding: 0;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .detail-overlay.active .detail-page {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .detail-page::before {
+    content: '';
+    position: absolute;
+    width: 100%; height: 100%;
+    top: 0; left: 0;
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(240, 180, 170, 0.2), transparent 55%),
+      radial-gradient(ellipse at 70% 80%, rgba(196, 170, 220, 0.18), transparent 55%);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .detail-content { position: relative; z-index: 1; padding: 48px 48px 80px; }
+
+  .detail-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-mid);
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-family: inherit;
+    padding: 8px 0;
+    margin-bottom: 32px;
+    transition: color 0.2s;
+  }
+  .detail-back:hover { color: var(--text); }
+
+  .detail-hero {
+    margin-bottom: 40px;
+  }
+  .detail-hero .detail-icon {
+    width: 64px; height: 64px;
+    border-radius: 18px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, rgba(232, 168, 124, 0.15), rgba(196, 160, 212, 0.15));
+  }
+  .detail-hero h1 {
+    font-size: 40px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+  }
+  .detail-hero .detail-desc {
+    font-size: 18px;
+    color: var(--text-mid);
+    font-weight: 400;
+    line-height: 1.7;
+    max-width: 700px;
+    margin-bottom: 24px;
+  }
+
+  .detail-stats-row {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .detail-stat {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--text-mid);
+    font-weight: 500;
+  }
+  .detail-stat .num {
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .detail-actions {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+  }
+
+  /* ─── README RENDERING ─── */
+  .readme-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border-radius: 24px;
+    padding: 40px 40px;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+  }
+  .readme-card .readme-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(180, 160, 200, 0.12);
+  }
+  .readme-body { line-height: 1.85; color: var(--text-mid); }
+  .readme-body h1 { font-size: 28px; font-weight: 700; color: var(--text); margin: 32px 0 16px; letter-spacing: -0.5px; }
+  .readme-body h1:first-child { margin-top: 0; }
+  .readme-body h2 { font-size: 22px; font-weight: 700; color: var(--text); margin: 28px 0 14px; letter-spacing: -0.3px; }
+  .readme-body h3 { font-size: 18px; font-weight: 600; color: var(--text); margin: 24px 0 12px; }
+  .readme-body p { margin-bottom: 16px; font-size: 15px; }
+  .readme-body strong { color: var(--text); font-weight: 600; }
+  .readme-body ul, .readme-body ol { margin: 12px 0 16px 24px; }
+  .readme-body li { margin-bottom: 6px; font-size: 15px; }
+  .readme-body code {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    background: rgba(180, 160, 200, 0.1);
+    padding: 2px 7px;
+    border-radius: 6px;
+    font-size: 13px;
+    color: var(--text);
+  }
+  .readme-body pre {
+    background: rgba(45, 40, 60, 0.06);
+    border-radius: 14px;
+    padding: 20px 24px;
+    overflow-x: auto;
+    margin: 16px 0;
+    border: 1px solid rgba(180, 160, 200, 0.1);
+  }
+  .readme-body pre code {
+    background: none;
+    padding: 0;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text);
+  }
+  .readme-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  .readme-body th, .readme-body td {
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(180, 160, 200, 0.1);
+  }
+  .readme-body th { font-weight: 600; color: var(--text); }
+  .readme-body a {
+    color: #b07cc8;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(176, 124, 200, 0.3);
+    transition: border-color 0.2s;
+  }
+  .readme-body a:hover { border-color: #b07cc8; }
+
+  /* Workflow diagram */
+  .workflow-box {
+    background: rgba(45, 40, 60, 0.06);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin: 16px 0;
+    border: 1px solid rgba(180, 160, 200, 0.1);
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    white-space: pre;
+    overflow-x: auto;
+    color: var(--text);
+  }
+
+  /* ─── ABOUT ─── */
+  .about-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+  .about-text {
+    font-size: 17px;
+    line-height: 1.9;
+    color: var(--text-mid);
+    font-weight: 400;
+  }
+  .about-text p { margin-bottom: 20px; }
+  .about-text strong { color: var(--text); font-weight: 600; }
+
+  .about-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border-radius: 24px;
+    padding: 36px 32px;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+  }
+  .about-card h4 {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 20px;
+  }
+  .about-card ul { list-style: none; }
+  .about-card li {
+    padding: 10px 0;
+    font-size: 15px;
+    color: var(--text-mid);
+    border-bottom: 1px solid rgba(180, 160, 200, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .about-card li:last-child { border-bottom: none; }
+  .about-card li .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+    flex-shrink: 0;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    text-align: center;
+    padding: 48px 32px;
+    color: var(--text-dim);
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
+  footer a { color: var(--text-mid); text-decoration: none; }
+  footer a:hover { color: var(--text); }
+  footer .gradient-line {
+    width: 40px; height: 3px;
+    background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
+    border-radius: 2px;
+    margin: 0 auto 20px;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    nav .inner { padding: 14px 20px; }
+    nav .links { gap: 18px; }
+    nav .links a { font-size: 13px; }
+    .hero { padding: 100px 24px 60px; }
+    .hero .subtitle { font-size: 17px; }
+    section { padding: 60px 20px; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .about-content { grid-template-columns: 1fr; gap: 32px; }
+    .btn { padding: 12px 22px; font-size: 14px; }
+    .detail-content { padding: 32px 24px 60px; }
+    .detail-hero h1 { font-size: 28px; }
+    .readme-card { padding: 24px 20px; }
+  }
+
+  /* ─── ANIMATIONS ─── */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <a class="logo" onclick="closeDetail()">Zhi<span>✦</span>min</a>
+    <div class="links">
+      <a onclick="closeDetail()" href="#projects">Projects</a>
+      <a onclick="closeDetail()" href="#about">About</a>
+      <a href="https://github.com/minnayu14" target="_blank">GitHub</a>
+      <a href="https://okjk.co/YyZ2an" target="_blank">即刻</a>
+      <a href="https://xhslink.com/m/3QPMIAR7vJt" target="_blank">小红书</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page" id="mainPage">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="label">Agent Builder & Maker</div>
+    <h1>Build with AI,<br><span class="highlight">Ship for Real</span></h1>
+    <p class="subtitle">
+      用 Agent 解决真实场景的问题<br>
+      从想法到产品，从实践到开源
+    </p>
+    <div class="cta-row">
+      <a href="#projects" class="btn btn-primary">看看我在做什么 ↓</a>
+      <a href="https://github.com/minnayu14" target="_blank" class="btn btn-ghost">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.73.083-.73 1.205.085 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.605-.015 2.896-.015 3.286 0 .315.21.694.825.576C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+        GitHub
+      </a>
+      <a href="https://okjk.co/YyZ2an" target="_blank" class="btn btn-ghost">即刻</a>
+      <a href="https://xhslink.com/m/3QPMIAR7vJt" target="_blank" class="btn btn-ghost">小红书</a>
+    </div>
+    <div class="scroll-hint">
+      <span>SCROLL</span>
+      <span class="arrow">↓</span>
+    </div>
+  </div>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="section-inner">
+      <div class="section-label">Projects</div>
+      <h2 class="section-title">我在做的事</h2>
+
+      <div class="projects-grid">
+
+        <!-- TTS Video Generator — clickable, opens detail -->
+        <div class="project-card fade-up" onclick="openDetail('tts')">
+          <div class="card-icon">🎬</div>
+          <span class="card-arrow">↗</span>
+          <h3>TTS Video Generator</h3>
+          <div class="tags">
+            <span class="tag open-source">Open Source</span>
+            <span class="tag">Python</span>
+            <span class="tag">ElevenLabs</span>
+            <span class="tag">FFmpeg</span>
+          </div>
+          <p class="desc">
+            自动生成带 AI 配音和同步字幕的短视频工具。输入文案，输出成品视频——从 TTS 到字幕到合成，全流程 Agent 化。
+          </p>
+          <div class="stats">
+            <span>⭐ <span id="starCount">13</span> stars</span>
+            <span>📄 MIT License</span>
+          </div>
+        </div>
+
+        <!-- 吉光片羽 -->
+        <div class="project-card no-detail fade-up">
+          <div class="card-icon">✦</div>
+          <h3>吉光片羽</h3>
+          <div class="tags">
+            <span class="tag">Node.js</span>
+            <span class="tag">飞书 Bot</span>
+            <span class="tag">Übersicht</span>
+          </div>
+          <p class="desc">
+            个人 Agent 操作系统。云端 API + 飞书 Bot + 桌面 Widget + 每日推送，用 AI 管理待办、记录灵感、生成周报，日常工作的 AI 协作中枢。
+          </p>
+          <div class="stats">
+            <span>🔄 Daily active</span>
+          </div>
+        </div>
+
+        <!-- AI 出海应用 -->
+        <div class="project-card no-detail fade-up">
+          <div class="card-icon">🌏</div>
+          <h3>AI 出海应用</h3>
+          <div class="tags">
+            <span class="tag">产品</span>
+            <span class="tag">出海</span>
+            <span class="tag">AI</span>
+          </div>
+          <p class="desc">
+            AI 驱动的出海产品，从产品设计到增长，全程用 Agent 辅助决策和执行。正在打磨中。
+          </p>
+          <div class="stats">
+            <span>🚀 In production</span>
+          </div>
+        </div>
+
+        <!-- 日常实践分享 -->
+        <div class="project-card no-detail fade-up">
+          <div class="card-icon">🎤</div>
+          <h3>Agent 实践分享</h3>
+          <div class="tags">
+            <span class="tag">即刻</span>
+            <span class="tag">小红书</span>
+            <span class="tag">分享</span>
+          </div>
+          <p class="desc">
+            在即刻和小红书持续分享 Agent 日常实践心得、开发经验和产品思考。用 Agent 做关于 Agent 的内容。
+          </p>
+          <div class="stats">
+            <span>📝 持续更新中</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-inner">
+      <div class="section-label">About</div>
+      <h2 class="section-title">关于我</h2>
+
+      <div class="about-content">
+        <div class="about-text">
+          <p>
+            我是 <strong>Zhimin</strong>，ex VC，连续创业者，曾创办百万日活产品。
+          </p>
+          <p>
+            现在 all-in AI Agent。不只是在「用」AI，而是在<strong>和 AI 一起构建</strong>。从个人效率系统到产品运营，从视频生成到内容创作，每一个场景都在尝试让 Agent 真正参与进来。
+          </p>
+          <p>
+            我的方法论很简单：<strong>从自身需求出发，做出来、用起来、讲出去、开源出去</strong>。不追求技术炫技，追求真实场景里跑通的价值。
+          </p>
+        </div>
+
+        <div class="about-card">
+          <h4>What I Do</h4>
+          <ul>
+            <li><span class="dot"></span>Agent 开发与开源</li>
+            <li><span class="dot"></span>AI 产品设计与运营</li>
+            <li><span class="dot"></span>内容创作自动化</li>
+            <li><span class="dot"></span>个人效率系统构建</li>
+            <li><span class="dot"></span>实践经验分享</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="gradient-line"></div>
+    <p>Built with ✦ and AI · <a href="https://github.com/minnayu14" target="_blank">@minnayu14</a></p>
+  </footer>
+
+</div>
+
+<!-- ═══ PROJECT DETAIL OVERLAY ═══ -->
+<div class="detail-overlay" id="detailOverlay">
+  <div class="detail-backdrop" onclick="closeDetail()"></div>
+  <div class="detail-page">
+    <div class="detail-content">
+
+      <button class="detail-back" onclick="closeDetail()">← 返回项目列表</button>
+
+      <div class="detail-hero">
+        <div class="detail-icon">🎬</div>
+        <h1>TTS Video Generator</h1>
+        <p class="detail-desc">
+          一个 Python 工具，自动生成带 AI 配音和同步字幕的短视频。适用于制作知识科普、社交媒体视频和旁白式幻灯片。
+        </p>
+
+        <div class="detail-stats-row">
+          <div class="detail-stat">⭐ <span class="num" id="detailStars">13</span> Stars</div>
+          <div class="detail-stat">🍴 <span class="num" id="detailForks">0</span> Forks</div>
+          <div class="detail-stat">📄 MIT License</div>
+          <div class="detail-stat">🐍 Python</div>
+        </div>
+
+        <div class="detail-actions">
+          <!-- 方案 A：自定义好看按钮（点击跳新标签页） -->
+          <a href="https://github.com/minnayu14/tts-video-generator" target="_blank" class="btn btn-sm btn-star">
+            ⭐ Star this project
+          </a>
+          <a href="https://github.com/minnayu14/tts-video-generator/fork" target="_blank" class="btn btn-sm btn-fork">
+            🍴 Fork
+          </a>
+          <a href="https://github.com/minnayu14/tts-video-generator/archive/refs/heads/main.zip" class="btn btn-sm btn-ghost">
+            📦 Download ZIP
+          </a>
+        </div>
+
+      </div>
+
+      <!-- README -->
+      <div class="readme-card">
+        <div class="readme-header">
+          <span>📖</span> README.md
+        </div>
+        <div class="readme-body">
+          <h1>TTS Video Generator</h1>
+          <p>一个 Python 工具，自动生成带 AI 配音和同步字幕的短视频。适用于制作知识科普、社交媒体视频（TikTok / 抖音 / Reels / Shorts）和旁白式幻灯片。</p>
+
+          <h2>工作流程</h2>
+          <div class="workflow-box">Word 文档 (.docx)  →  文本提取  →  ElevenLabs TTS（带时间戳）
+     ↓                                    ↓
+  每期标题                          音频 + 字符级时间戳
+     ↓                                    ↓
+背景图片  +  ASS 字幕  +  BGM  →  FFmpeg  →  最终 MP4 视频</div>
+
+          <h2>功能特点</h2>
+          <ul>
+            <li><strong>AI 语音合成</strong>：使用 ElevenLabs API，支持多种语言的自然语音</li>
+            <li><strong>精准字幕</strong>：字符级时间戳确保字幕完美同步</li>
+            <li><strong>智能换行</strong>：自动在标点处断行，符合排版规则</li>
+            <li><strong>背景音乐</strong>：随机选择 BGM，可配置混音音量</li>
+            <li><strong>批量处理</strong>：支持单期生成或批量生成</li>
+            <li><strong>缓存机制</strong>：音频和时间戳数据会缓存，避免重复调用 API</li>
+            <li><strong>全面可配</strong>：所有设置通过 <code>.env</code> 配置</li>
+          </ul>
+
+          <h2>环境要求</h2>
+          <ul>
+            <li>Python 3.9+</li>
+            <li>FFmpeg（需支持 libass 字幕渲染）</li>
+            <li><a href="https://elevenlabs.io/" target="_blank">ElevenLabs</a> API Key</li>
+          </ul>
+
+          <h2>快速开始</h2>
+          <pre><code># 1. 克隆仓库
+git clone https://github.com/minnayu14/tts-video-generator.git
+cd tts-video-generator
+
+# 2. 安装依赖
+pip install -r requirements.txt
+
+# 3. 配置
+cp .env.example .env
+# 编辑 .env，填入你的 ElevenLabs API Key 和 Voice ID
+
+# 4. 准备内容
+# - 创建 Word 文档（scripts.docx），按格式写入脚本
+# - 将背景图片放入 backgrounds/ 目录
+# - （可选）将 BGM 音频放入 bgm/ 目录
+
+# 5. 生成视频
+python video_generate.py --single 1    # 生成单期
+python video_generate.py --batch 10    # 批量生成
+python video_generate.py               # 生成全部</code></pre>
+
+          <h2>Word 文档格式</h2>
+          <p><code>.docx</code> 中每期的格式：</p>
+          <pre><code>1 这里是标题
+【Text】正文内容。第二句。第三句。
+
+2 另一期标题
+【Text】更多正文内容。更多句子。</code></pre>
+          <ul>
+            <li><strong>标题行</strong>：以期号开头，后接标题文字</li>
+            <li><strong>正文行</strong>：包含文本标签（默认 <code>【Text】</code>），后面是正文</li>
+            <li>可通过 <code>.env</code> 中的 <code>TEXT_TAG</code> 自定义标签</li>
+          </ul>
+
+          <h2>常用命令</h2>
+          <table>
+            <thead><tr><th>命令</th><th>说明</th></tr></thead>
+            <tbody>
+              <tr><td><code>python video_generate.py</code></td><td>生成所有未完成的期数</td></tr>
+              <tr><td><code>python video_generate.py --single 1</code></td><td>只生成第 1 期</td></tr>
+              <tr><td><code>python video_generate.py --batch 10</code></td><td>批量生成最多 10 期</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  // Scroll fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // Detail overlay
+  function openDetail(project) {
+    if (project === 'tts') {
+      const overlay = document.getElementById('detailOverlay');
+      overlay.classList.add('active');
+      overlay.scrollTop = 0;
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  function closeDetail() {
+    const overlay = document.getElementById('detailOverlay');
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  // ESC to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeDetail();
+  });
+
+  // Fetch live stats from GitHub API (no auth needed for public repos)
+  async function fetchRepoStats() {
+    try {
+      const res = await fetch('https://api.github.com/repos/minnayu14/tts-video-generator');
+      if (!res.ok) return;
+      const data = await res.json();
+      document.getElementById('starCount').textContent = data.stargazers_count;
+      document.getElementById('detailStars').textContent = data.stargazers_count;
+      document.getElementById('detailForks').textContent = data.forks_count;
+    } catch (e) { /* silently fail, keep static numbers */ }
+  }
+  fetchRepoStats();
+</script>
+
+</body>
+</html>
