@@ -95,6 +95,14 @@ button.cp:focus-visible,a:focus-visible{outline:1px solid var(--brass);outline-o
   .illo svg{transition:transform .3s ease}
   .day:hover .illo svg{transform:rotate(-6deg) scale(1.06)}
 }
+.mapbox{margin-top:28px}
+.map{display:block;width:100%;height:auto;max-width:420px;margin:0 auto;border-radius:22px;box-shadow:0 0 0 1px var(--line)}
+.map text{font-family:var(--sans);font-size:12px;font-weight:500}
+.map .note{fill:var(--muted);font-weight:400;font-size:11px;letter-spacing:.04em}
+.map .lake{fill:#D2665C;font-family:var(--serif);font-size:13px;letter-spacing:.3em}
+.map .pin{cursor:pointer}
+.map .pin:hover rect{stroke:#F19E96}
+.mapcap{text-align:center;font-size:12px;color:var(--muted);letter-spacing:.12em;margin-top:10px}
 /* todo + all */
 .coda{margin-top:64px;display:flex;flex-direction:column;gap:40px}
 .coda h2{font-family:var(--serif);font-weight:500;font-size:18px;letter-spacing:.2em;margin:0 0 12px}
@@ -167,51 +175,55 @@ body{overflow:hidden}
   </div>
 </header>
 <div class="hint">左右滑动，或点底部日期切换 →</div>
-<section class="coda lj">
-  
-  <div>
-    <h2>全文</h2>
-    <textarea id="alltext" readonly>云南国庆行程 10.2–10.8
-
-10.2 周五
-【航班】上海浦东T2 08:35 → 丽江三义机场 12:20
-【住】千山暮雪日照金山野奢庄园（微信预订）
-  地址：云南玉龙白沙东文村一组70号
-  10.2入住–10.3离店 · 云隐·寻梦浴缸｜全景大床房
-
-10.3 周六
-【网球场拍照】08:00–09:00 雪山红土网球场（庄园内）
-【住】云见栖舍·岚溪｜禅茶观景Holiday Villa民宿（丽江古城木府店）
-  地址：丽江古城七一街兴文巷74号
-  10.3入住–10.4离店 · 枫林畔｜书里-闲庭自在套房
-  https://hotels.ctrip.com/hotel/1617307.html
-
-10.4 周日
-【火车】C984 丽江站 13:48 → 大理站 16:02
-【住】简禾隐世民宿（大理古城店）
-  地址：大理古城平等路172号
-  10.4入住–10.6离店（2晚）· 云海·沐光大床房
-  https://hotels.ctrip.com/hotel/114401237.html
-
-10.5 周一
-大理古城自由活动（连住简禾）
-
-10.6 周二
-【住】月海林湾·现代侘寂风｜庭院露台美宿（大理磻溪S湾店）
-  地址：大理湾桥镇石岭村委会8社52号
-  10.6入住–10.7离店 · 风·伽蓝观日出180度海景大床房
-  https://hotels.ctrip.com/hotel/133189568.html
-
-10.7 周三
-【住】木夕大里·伙山度假酒店（微信预订）
-  地址：云南大理市双廊镇伙山村罗者地17号
-  10.7入住–10.8离店 · 碧沅·水景露台山海观景套房
-
-10.8 周四
-木夕大里退房
-【航班】大理机场 20:10 → 上海浦东T2 23:55</textarea>
-    <div style="margin-top:12px"><button class="cp" id="copyall">复制全文</button></div>
-  </div>
+<section class="mapbox">
+<svg class="map" viewBox="0 0 360 470" role="img" aria-label="丽江到大理的行程手绘地图">
+<rect x="0" y="0" width="360" height="470" rx="22" fill="#FFFBF5"/>
+<!-- sun & clouds -->
+<g><circle cx="312" cy="54" r="18" fill="#F19E96"/><path d="M312 24 V16 M336 34 L342 28 M288 34 L282 28 M342 54 H350" stroke="#F19E96" stroke-width="2" stroke-linecap="round"/></g>
+<path d="M28 196 q0 -12 14 -12 q4 -10 16 -8 q10 -6 18 4 q12 0 12 10 z" fill="#FFFFFF" stroke="#6B5048" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" stroke-width="1.2"/>
+<path d="M262 196 q0 -10 12 -10 q4 -8 14 -6 q9 -4 14 4 q10 0 10 8 z" fill="#FFFFFF" stroke="#6B5048" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" stroke-width="1.2"/>
+<!-- Jade Dragon snow mountain -->
+<path d="M120 104 L158 46 L174 66 L196 30 L242 104 Z" fill="#EAE7B4" stroke="#6B5048" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M150 58 L158 46 L166 58 L162 55 L158 60 L154 55 Z M186 46 L196 30 L206 46 L201 43 L196 48 L191 43 Z" fill="#FFFFFF" stroke="#6B5048" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" stroke-width="1.2"/>
+<path d="M168 104 Q180 88 194 104" fill="#B2BA69" stroke="#6B5048" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" stroke-width="1.2"/>
+<!-- arrival flight -->
+<path d="M14 40 Q70 52 112 88 T160 118" fill="none" stroke="#7E8A34" stroke-width="1.4" stroke-dasharray="4 4" stroke-linecap="round"/>
+<g transform="translate(38 36) rotate(14) scale(0.8)" stroke="#6B5048" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+<path d="M10 3 L13 -4 L16 -4 L15 3 Z" fill="#FDD7D0"/><path d="M10 8 L13 15 L16 15 L15 8 Z" fill="#FDD7D0"/><path d="M1 3 L-1 -2 L2 -2 L6 3 Z" fill="#F19E96"/>
+<path d="M0 5.5 Q0 3 4 3 L21 3 Q25 4 25 5.5 Q25 7 21 8 L4 8 Q0 8 0 5.5 Z" fill="#FFFBF5"/></g>
+<text x="70" y="30" class="note">10.2 飞抵丽江</text>
+<!-- train route -->
+<path d="M208 176 C226 220 128 226 124 286 C121 330 134 360 140 392" fill="none" stroke="#D2665C" stroke-width="1.6" stroke-dasharray="5 5" stroke-linecap="round"/>
+<g transform="translate(160 214) rotate(-12)" stroke="#6B5048" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" stroke-width="1.3"><rect x="-16" y="-8" width="32" height="15" rx="6" fill="#FDD7D0"/><rect x="-11" y="-5" width="7" height="5" rx="1" fill="#FFFBF5"/><rect x="-2" y="-5" width="7" height="5" rx="1" fill="#FFFBF5"/><circle cx="-9" cy="8" r="2.4" fill="#6B5048"/><circle cx="9" cy="8" r="2.4" fill="#6B5048"/></g>
+<text x="182" y="236" class="note">C984 · 10.4</text>
+<!-- Cangshan -->
+<path d="M22 440 L46 350 L64 388 L84 318 L104 372 L118 340 L134 440 Z" fill="#E4EBC9" stroke="#6B5048" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" stroke-width="1.2"/>
+<path d="M78 332 L84 318 L90 332 Z M42 362 L46 350 L51 362 Z" fill="#FFFFFF"/>
+<!-- Erhai lake -->
+<path d="M198 262 C226 256 248 278 245 314 C242 352 228 390 208 414 C194 430 176 420 181 396 C186 364 172 334 177 302 C180 278 184 264 198 262 Z" fill="#FDD7D0" stroke="#6B5048" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" stroke-width="1.4"/>
+<path d="M196 300 q5 -4 10 0 t10 0 M192 340 q5 -4 10 0 t10 0 M196 380 q5 -4 10 0 t10 0" fill="none" stroke="#FFFBF5" stroke-width="1.8" stroke-linecap="round"/>
+<text x="212" y="362" class="lake">洱海</text>
+<!-- sailboat near 双廊 -->
+<g transform="translate(222 312)" stroke="#6B5048" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" stroke-width="1.2"><path d="M-8 4 L8 4 L5 8 L-5 8 Z" fill="#F19E96"/><path d="M0 4 V-12 L8 2 Z" fill="#FFFBF5"/></g>
+<!-- departure flight -->
+<path d="M214 432 Q270 440 318 416" fill="none" stroke="#D2665C" stroke-width="1.4" stroke-dasharray="4 4" stroke-linecap="round"/>
+<g transform="translate(310 404) rotate(-24) scale(0.8)" stroke="#6B5048" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+<path d="M10 3 L13 -4 L16 -4 L15 3 Z" fill="#FDD7D0"/><path d="M10 8 L13 15 L16 15 L15 8 Z" fill="#FDD7D0"/><path d="M1 3 L-1 -2 L2 -2 L6 3 Z" fill="#F19E96"/>
+<path d="M0 5.5 Q0 3 4 3 L21 3 Q25 4 25 5.5 Q25 7 21 8 L4 8 Q0 8 0 5.5 Z" fill="#FFFBF5"/></g>
+<text x="250" y="458" class="note">10.8 大理起飞回家</text>
+<!-- pins -->
+<g class="pin" data-go="d02"><rect x="38" y="90" width="116" height="21" rx="10.5" fill="#FFFBF5" stroke="#F1E3D3"/><text x="96" y="104" text-anchor="middle" fill="#7E8A34">千山暮雪 · 10.2</text>
+<g transform="translate(166 120)"><path d="M0 0 C-6 -7 -8 -11 -8 -15 A8 8 0 1 1 8 -15 C8 -11 6 -7 0 0 Z" fill="#7E8A34" stroke="#6B5048" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" stroke-width="1.3"/><circle cy="-15" r="3" fill="#FFFBF5"/></g></g>
+<g class="pin" data-go="d03"><rect x="220" y="148" width="116" height="21" rx="10.5" fill="#FFFBF5" stroke="#F1E3D3"/><text x="278" y="162" text-anchor="middle" fill="#7E8A34">丽江古城 · 10.3</text>
+<g transform="translate(208 174)"><path d="M0 0 C-6 -7 -8 -11 -8 -15 A8 8 0 1 1 8 -15 C8 -11 6 -7 0 0 Z" fill="#7E8A34" stroke="#6B5048" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" stroke-width="1.3"/><circle cy="-15" r="3" fill="#FFFBF5"/></g></g>
+<g class="pin" data-go="d06"><rect x="52" y="286" width="110" height="21" rx="10.5" fill="#FFFBF5" stroke="#F1E3D3"/><text x="107" y="300" text-anchor="middle" fill="#D2665C">磻溪S湾 · 10.6</text>
+<g transform="translate(174 312)"><path d="M0 0 C-6 -7 -8 -11 -8 -15 A8 8 0 1 1 8 -15 C8 -11 6 -7 0 0 Z" fill="#D2665C" stroke="#6B5048" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" stroke-width="1.3"/><circle cy="-15" r="3" fill="#FFFBF5"/></g></g>
+<g class="pin" data-go="d07"><rect x="254" y="256" width="91" height="21" rx="10.5" fill="#FFFBF5" stroke="#F1E3D3"/><text x="300" y="270" text-anchor="middle" fill="#D2665C">双廊 · 10.7</text>
+<g transform="translate(242 282)"><path d="M0 0 C-6 -7 -8 -11 -8 -15 A8 8 0 1 1 8 -15 C8 -11 6 -7 0 0 Z" fill="#D2665C" stroke="#6B5048" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" stroke-width="1.3"/><circle cy="-15" r="3" fill="#FFFBF5"/></g></g>
+<g class="pin" data-go="d04"><rect x="-1" y="366" width="129" height="21" rx="10.5" fill="#FFFBF5" stroke="#F1E3D3"/><text x="63" y="380" text-anchor="middle" fill="#D2665C">大理古城 · 10.4–5</text>
+<g transform="translate(140 394)"><path d="M0 0 C-6 -7 -8 -11 -8 -15 A8 8 0 1 1 8 -15 C8 -11 6 -7 0 0 Z" fill="#D2665C" stroke="#6B5048" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" stroke-width="1.3"/><circle cy="-15" r="3" fill="#FFFBF5"/></g></g>
+</svg>
+<div class="mapcap">点地图上的地点，直接跳到那天</div>
 </section>
 
 
@@ -457,7 +469,6 @@ const ALL = `云南国庆行程 10.2–10.8
 10.8 周四
 木夕大里退房
 【航班】大理机场 20:10 → 上海浦东T2 23:55`;
-const ta=document.getElementById('alltext'); ta.value=ALL;
 
 function flash(btn){const t=btn.textContent;btn.textContent='已复制';btn.classList.add('ok');setTimeout(()=>{btn.textContent=t;btn.classList.remove('ok')},1200)}
 function fallbackSelect(el){
@@ -470,9 +481,6 @@ document.querySelectorAll('.row button.cp').forEach(btn=>{
     navigator.clipboard.writeText(el.textContent.trim()).then(()=>flash(btn)).catch(()=>{fallbackSelect(el);btn.textContent='已选中'});
   });
 });
-document.getElementById('copyall').addEventListener('click',e=>{
-  const btn=e.currentTarget;
-  navigator.clipboard.writeText(ALL).then(()=>flash(btn)).catch(()=>{fallbackSelect(ta);btn.textContent='已选中'});
 });
 
 const pager=document.getElementById('pager');
