@@ -104,6 +104,20 @@ button.cp:focus-visible,a:focus-visible{outline:1px solid var(--brass);outline-o
 .map .pin:hover rect{stroke:#F19E96}
 .mapcap{text-align:center;font-size:12px;color:var(--muted);letter-spacing:.12em;margin-top:10px}
 .lux{margin-top:12px;font-family:var(--serif);font-size:14.5px;line-height:1.9;color:#B0544A;background:linear-gradient(135deg,#FDD7D0 0%,#F8ECD7 100%);border-radius:14px;padding:12px 16px}
+.plan{margin:6px 0 0 104px;padding:16px 18px 6px;background:var(--paper);border-radius:16px;box-shadow:0 0 0 1px var(--line)}
+.plan-h{font-family:var(--serif);font-size:16px;font-weight:500;letter-spacing:.14em;color:var(--accent);display:flex;align-items:baseline;gap:10px;margin-bottom:8px}
+.plan-h span{font-family:var(--latin);font-style:italic;font-size:15px;letter-spacing:.04em;color:var(--muted);font-weight:400}
+.plan ol{list-style:none;margin:0;padding:0;position:relative}
+.plan ol::before{content:"";position:absolute;left:5px;top:12px;bottom:18px;border-left:1.5px dotted var(--accent);opacity:.45}
+.plan li{position:relative;padding:5px 0 9px 22px;font-size:14px;line-height:1.7;font-weight:400}
+.plan li::before{content:"";position:absolute;left:0;top:11px;width:11px;height:11px;border-radius:50%;background:var(--paper);box-shadow:inset 0 0 0 2px var(--accent)}
+.plan li.p-bag::before{background:#B2BA69;box-shadow:none}
+.plan li.p-tip{color:var(--muted);font-size:13px}
+.plan li.p-tip::before{background:#F19E96;box-shadow:none;width:9px;height:9px;left:1px;top:12px}
+.tagbag,.tagtip{display:inline-block;font-size:11px;letter-spacing:.1em;border-radius:99px;padding:0 8px;margin-right:6px;vertical-align:1px;font-weight:500}
+.tagbag{background:#EEF0C8;color:#6A7428}
+.tagtip{background:#FDDCD5;color:#B0544A}
+@media (max-width:520px){.plan{margin-left:0}}
 /* todo + all */
 .coda{margin-top:64px;display:flex;flex-direction:column;gap:40px}
 .coda h2{font-family:var(--serif);font-weight:500;font-size:18px;letter-spacing:.2em;margin:0 0 12px}
@@ -264,6 +278,7 @@ body{overflow:hidden}
       </div>
     </div>
   </div>
+<div class="plan"><div class="plan-h"><span>Suggested</span>推荐安排</div><ol><li class="p-t">12:20 落地丽江，打车或庄园接机，直接去千山暮雪（约 1 小时）</li><li class="p-bag"><span class="tagbag">行李</span>先放行李，没到入住时间就请前台寄存</li><li class="p-t">下午去旁边的白沙古镇散步，比丽江古城安静</li><li class="p-t">傍晚在庄园看雪山，早点休息</li><li class="p-tip"><span class="tagtip">提示</span>海拔约 2400 米，第一天别剧烈运动，多喝水</li></ol></div>
 </div></section>
 <section class="panel lj" id="d03" data-i="2"><div class="wrap">
 <div class="ch-head"><span class="ch-num">I</span><span class="ch-title">丽江</span><span class="ch-en">Lijiang</span></div>
@@ -291,6 +306,7 @@ body{overflow:hidden}
       </div>
     </div>
   </div>
+<div class="plan"><div class="plan-h"><span>Suggested</span>推荐安排</div><ol><li class="p-t">8:00 网球场拍照，之后慢慢吃早饭，中午前退房</li><li class="p-bag"><span class="tagbag">行李</span>打车直接去云见栖舍。车进不了古城，提前请民宿到路口接</li><li class="p-t">放好行李后逛木府（就在民宿旁边）</li><li class="p-t">傍晚上狮子山万古楼看古城日落，晚饭在四方街一带</li><li class="p-tip"><span class="tagtip">提示</span>国庆人多，逛累了就回民宿喝茶</li></ol></div>
 </div></section>
 <section class="panel dl" id="d04" data-i="3"><div class="wrap">
 <div class="ch-head"><span class="ch-num">II</span><span class="ch-title">大理</span><span class="ch-en">Dali</span></div>
@@ -325,6 +341,7 @@ body{overflow:hidden}
       </div>
     </div>
   </div>
+<div class="plan"><div class="plan-h"><span>Suggested</span>推荐安排</div><ol><li class="p-t">睡到自然醒，古城里吃早饭、走一走</li><li class="p-bag"><span class="tagbag">行李</span>中午退房，请民宿帮忙把行李送到路口</li><li class="p-t">12:50 前出发去丽江站，提前 40 分钟到安检</li><li class="p-t">16:02 到大理站，打车去古城（30–40 分钟）</li><li class="p-bag"><span class="tagbag">行李</span>提前问简禾车能否开到门口，不能就请他们到路口接</li><li class="p-t">晚上人民路随便逛逛、吃饭</li></ol></div>
 </div></section>
 <section class="panel dl" id="d05" data-i="4"><div class="wrap">
 <div class="ch-head"><span class="ch-num">II</span><span class="ch-title">大理</span><span class="ch-en">Dali</span></div>
@@ -353,6 +370,7 @@ body{overflow:hidden}
       </div>
     </div>
   </div>
+<div class="plan"><div class="plan-h"><span>Suggested</span>推荐安排</div><ol><li class="p-t">睡饱，古城里吃早午饭</li><li class="p-t">下午约旅拍，去洱海西岸拍到日落</li><li class="p-t">晚上回古城简单吃点，早点休息</li><li class="p-tip"><span class="tagtip">提示</span>今天不换酒店，行李完全不用管</li></ol></div>
 </div></section>
 <section class="panel dl" id="d06" data-i="5"><div class="wrap">
 <div class="ch-head"><span class="ch-num">II</span><span class="ch-title">大理</span><span class="ch-en">Dali</span></div>
@@ -376,6 +394,7 @@ body{overflow:hidden}
       </div>
     </div>
   </div>
+<div class="plan"><div class="plan-h"><span>Suggested</span>推荐安排</div><ol><li class="p-bag"><span class="tagbag">行李</span>上午退房，直接打车去月海林湾放行李</li><li class="p-t">轻装去喜洲古镇：喜洲粑粑 + 田边散步，1–2 小时</li><li class="p-t">下午回来入住，傍晚湖边看日落</li></ol></div>
 </div></section>
 <section class="panel dl" id="d07" data-i="6"><div class="wrap">
 <div class="ch-head"><span class="ch-num">II</span><span class="ch-title">大理</span><span class="ch-en">Dali</span></div>
@@ -400,6 +419,7 @@ body{overflow:hidden}
       </div>
     </div>
   </div>
+<div class="plan"><div class="plan-h"><span>Suggested</span>推荐安排</div><ol><li class="p-t">在房间看洱海日出，起不来也没关系</li><li class="p-t">慢慢吃早饭，中午前后退房</li><li class="p-bag"><span class="tagbag">行李</span>包车或专车直接去木夕大里（绕洱海北边，约 1 小时）</li><li class="p-t">到了就不出门了：泡露台、看洱海、在酒店吃晚饭</li><li class="p-tip"><span class="tagtip">提示</span>酒店在半山腰，进出不方便，晚饭前问好酒店餐厅是否需要预订</li></ol></div>
 </div></section>
 <section class="panel dl" id="d08" data-i="7"><div class="wrap">
 <div class="ch-head"><span class="ch-num">II</span><span class="ch-title">大理</span><span class="ch-en">Dali</span></div>
@@ -426,6 +446,7 @@ body{overflow:hidden}
       </div>
     </div>
   </div>
+<div class="plan"><div class="plan-h"><span>Suggested</span>推荐安排</div><ol><li class="p-t">睡懒觉，慢慢吃早饭看湖景，午饭也在酒店吃</li><li class="p-t">一整天都在酒店待着，不安排外出</li><li class="p-bag"><span class="tagbag">行李</span>提前问能否延迟退房，尽量晚点退</li><li class="p-bag"><span class="tagbag">行李</span>下午退房后带着行李直接去机场，17:30 前出发</li><li class="p-tip"><span class="tagtip">提示</span>车程是粗估，出发前用导航确认</li></ol></div>
 </div></section>
 </main>
 <nav class="tabs" id="tabs"><a class="lj" data-i="0" href="#home"><b>览</b><small>总览</small></a><a class="lj" data-i="1" href="#d02"><b>2</b><small>周五</small></a><a class="lj" data-i="2" href="#d03"><b>3</b><small>周六</small></a><a class="dl" data-i="3" href="#d04"><b>4</b><small>周日</small></a><a class="dl" data-i="4" href="#d05"><b>5</b><small>周一</small></a><a class="dl" data-i="5" href="#d06"><b>6</b><small>周二</small></a><a class="dl" data-i="6" href="#d07"><b>7</b><small>周三</small></a><a class="dl" data-i="7" href="#d08"><b>8</b><small>周四</small></a></nav>
